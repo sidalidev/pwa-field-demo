@@ -80,9 +80,9 @@ export default function GeoPage() {
 
   return (
     <div className="page">
-      <h2>📍 Trouver des boutiques de cartes</h2>
+      <h2>📍 Trouver des points d'intérêt</h2>
       <p className="page-desc">
-        Localisez-vous pour trouver les boutiques de cartes cartes proches de vous.
+        Localisez-vous pour trouver les points d'intérêt proches de vous.
       </p>
 
       <div className="test-section">

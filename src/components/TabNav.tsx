@@ -2,7 +2,7 @@ import type { Tab } from '../App'
 
 const tabs: { id: Tab; icon: string; label: string }[] = [
   { id: 'install', icon: '📲', label: 'Install' },
-  { id: 'offline', icon: '📡', label: 'Cartes' },
+  { id: 'offline', icon: '📡', label: 'Items' },
   { id: 'sync', icon: '🔄', label: 'Sync' },
   { id: 'camera', icon: '📷', label: 'Photo' },
   { id: 'geo', icon: '📍', label: 'Boutiques' },

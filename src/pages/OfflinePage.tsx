@@ -99,10 +99,10 @@ export default function OfflinePage() {
       </div>
 
       <form onSubmit={submit} className="form">
-        <h3>Ajouter une carte</h3>
+        <h3>Ajouter un item</h3>
         <input
           type="text"
-          placeholder="Nom de la carte (ex: Dragon Blanc aux Yeux Bleus)"
+          placeholder="Titre (ex: Mon premier item)"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="input"
@@ -121,7 +121,7 @@ export default function OfflinePage() {
 
       {items.length > 0 && (
         <div className="list-section">
-          <h3>Ma Collection ({items.length} cartes)</h3>
+          <h3>Mes items ({items.length} cartes)</h3>
           {items.map((item) => (
             <div key={item.id} className="list-item">
               <div className="list-item-header">

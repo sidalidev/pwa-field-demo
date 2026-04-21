@@ -75,9 +75,9 @@ export default function CameraPage() {
 
   return (
     <div className="page">
-      <h2>📷 Photographier une carte</h2>
+      <h2>📷 Prendre une photo</h2>
       <p className="page-desc">
-        Prenez en photo vos cartes cartes pour les ajouter à votre collection visuelle.
+        Prenez une photo pour l'ajouter à votre collection.
       </p>
 
       <div className="test-section">
@@ -111,7 +111,7 @@ export default function CameraPage() {
             onClick={takePhoto}
             style={{ marginTop: '0.5rem' }}
           >
-            📸 Capturer la carte
+            📸 Prendre la photo
           </button>
         </div>
       )}

@@ -37,7 +37,7 @@ export default function SyncPage() {
     try {
       const count = await syncPending()
       setLastSync(Date.now())
-      addLog(`✅ ${count} carte(s) synchronisée(s)`)
+      addLog(`✅ ${count} item(s) synchronisé(s)`)
       countPending()
     } catch (err) {
       addLog(`❌ Erreur sync : ${err}`)
@@ -56,7 +56,7 @@ export default function SyncPage() {
     const onSynced = (e: Event) => {
       const count = (e as CustomEvent).detail?.count ?? 0
       if (count > 0) {
-        addLog(`✅ Auto-sync : ${count} carte(s) synchronisée(s)`)
+        addLog(`✅ Auto-sync : ${count} item(s) synchronisé(s)`)
         setLastSync(Date.now())
         countPending()
       }
@@ -81,8 +81,8 @@ export default function SyncPage() {
     try {
       const reg = await navigator.serviceWorker.ready
       // @ts-ignore Background Sync API
-      await reg.sync.register('sync-cards')
-      addLog('✅ Background Sync enregistré : sync-cards')
+      await reg.sync.register('sync-items')
+      addLog('✅ Background Sync enregistré : sync-items')
     } catch (err) {
       addLog(`⚠️ Background Sync failed : ${err}`)
     }
@@ -96,7 +96,7 @@ export default function SyncPage() {
     <div className="page">
       <h2>🔄 Background Sync</h2>
       <p className="page-desc">
-        Synchronisation automatique des cartes ajoutées hors ligne quand le
+        Synchronisation automatique des items ajoutées hors ligne quand le
         réseau revient.
       </p>
 

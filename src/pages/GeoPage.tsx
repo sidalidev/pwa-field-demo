@@ -82,7 +82,7 @@ export default function GeoPage() {
     <div className="page">
       <h2>📍 Trouver des boutiques de cartes</h2>
       <p className="page-desc">
-        Localisez-vous pour trouver les boutiques de cartes Yu-Gi-Oh! proches de vous.
+        Localisez-vous pour trouver les boutiques de cartes cartes proches de vous.
       </p>
 
       <div className="test-section">

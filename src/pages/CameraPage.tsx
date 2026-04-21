@@ -77,7 +77,7 @@ export default function CameraPage() {
     <div className="page">
       <h2>📷 Photographier une carte</h2>
       <p className="page-desc">
-        Prenez en photo vos cartes Yu-Gi-Oh! pour les ajouter à votre collection visuelle.
+        Prenez en photo vos cartes cartes pour les ajouter à votre collection visuelle.
       </p>
 
       <div className="test-section">

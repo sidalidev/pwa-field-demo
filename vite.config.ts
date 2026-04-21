@@ -16,9 +16,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'Yu-Gi-Oh! Collection',
-        short_name: 'YGO Collection',
-        description: 'Gérez votre collection de cartes Yu-Gi-Oh!',
+        name: 'Ma Collection',
+        short_name: 'Ma Collection',
+        description: 'Gérez votre collection de cartes cartes',
         theme_color: '#7B2D8E',
         background_color: '#ffffff',
         display: 'standalone',

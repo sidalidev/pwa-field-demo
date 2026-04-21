@@ -1,6 +1,6 @@
 import { openDB, type DBSchema } from 'idb'
 
-interface YugiohCollectionDB extends DBSchema {
+interface CollectionDB extends DBSchema {
   cards: {
     key: number
     value: {
@@ -38,7 +38,7 @@ interface YugiohCollectionDB extends DBSchema {
 }
 
 export function getDB() {
-  return openDB<YugiohCollectionDB>('yugioh-collection', 1, {
+  return openDB<CollectionDB>('ma-collection', 1, {
     upgrade(db) {
       const cards = db.createObjectStore('cards', {
         keyPath: 'id',

@@ -10,6 +10,9 @@
     "generate-icons": "node scripts/generate-icons.js"
   },
   "dependencies": {
+    "@capacitor/android": "^8.3.1",
+    "@capacitor/cli": "^8.3.1",
+    "@capacitor/core": "^8.3.1",
     "idb": "^8.0.0",
     "leaflet": "^1.9.4",
     "react": "^19.0.0",

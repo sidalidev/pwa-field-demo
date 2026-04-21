@@ -17,7 +17,7 @@ export default function StatusBar() {
   return (
     <header className="status-bar">
       <div className="status-left">
-        <h1>Ma Collection</h1>
+        <h1>PWA Demo</h1>
         <span className="version-tag">v{__APP_VERSION__}</span>
       </div>
       <span className={`status-badge ${online ? 'online' : 'offline'}`}>

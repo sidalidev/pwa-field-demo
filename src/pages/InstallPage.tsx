@@ -37,7 +37,7 @@ export default function InstallPage() {
 
   return (
     <div className="page">
-      <h2>📲 Installer Ma Collection</h2>
+      <h2>📲 Installer PWA Demo</h2>
       <p className="page-desc">
         Installez l'app sur votre écran d'accueil pour gérer votre collection
         comme une vraie application, même hors ligne.
@@ -69,13 +69,13 @@ export default function InstallPage() {
 
       {deferredPrompt && (
         <button className="btn-primary" onClick={handleInstall}>
-          📲 Installer Ma Collection
+          📲 Installer PWA Demo
         </button>
       )}
 
       {installed && (
         <div className="info-box success">
-          ✅ Ma Collection installée ! Fermez cette fenêtre et ouvrez
+          ✅ PWA Demo installée ! Fermez cette fenêtre et ouvrez
           l'app depuis l'écran d'accueil.
         </div>
       )}
@@ -84,7 +84,7 @@ export default function InstallPage() {
         <div className="info-box">
           💡 Sur Chrome Android, le prompt d'installation apparaît après
           quelques secondes. Vous pouvez aussi utiliser le menu Chrome ⋮ →
-          « Installer l'application » pour ajouter Ma Collection.
+          « Installer l'application » pour ajouter PWA Demo.
         </div>
       )}
 

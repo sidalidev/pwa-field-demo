@@ -38,7 +38,7 @@ export default function GeoPage() {
 
     markerRef.current = L.circleMarker([lat, lng], {
       radius: 10,
-      fillColor: '#7B2D8E',
+      fillColor: '#2563eb',
       color: '#ffffff',
       weight: 3,
       fillOpacity: 1,

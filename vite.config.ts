@@ -16,11 +16,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'PWA Demo',
+        name: 'xxxxxx',
         short_name: 'PWA Demo',
         description: 'Démo des capacités PWA — Formation Web App cartes',
         theme_color: '#2563eb',
-        background_color: '#ffffff',
+        background_color: '#000',
         display: 'standalone',
         start_url: '/',
         icons: [

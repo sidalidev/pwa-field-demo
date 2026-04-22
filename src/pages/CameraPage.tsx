@@ -39,8 +39,11 @@ export default function CameraPage() {
           height: { ideal: 720 },
         },
       })
+      if (videoRef.current) {
+        videoRef.current.srcObject = s
+        await videoRef.current.play()
+      }
       setStream(s)
-      if (videoRef.current) videoRef.current.srcObject = s
     } catch (err) {
       alert(`Erreur caméra : ${err}`)
     }
@@ -129,7 +132,7 @@ export default function CameraPage() {
 
       {photo && (
         <div className="photo-result">
-          <h3>Carte photographiée</h3>
+          <h3>Photo capturée</h3>
           <img src={photo} alt="Capture" className="photo-preview" />
           <button className="btn-primary" onClick={savePhoto}>
             💾 Sauvegarder dans IndexedDB
@@ -139,7 +142,7 @@ export default function CameraPage() {
 
       {saved.length > 0 && (
         <div className="list-section">
-          <h3>Photos de cartes ({saved.length})</h3>
+          <h3>Photos sauvegardées ({saved.length})</h3>
           <div className="photo-grid">
             {saved.map((p) => (
               <img

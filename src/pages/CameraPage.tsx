@@ -14,13 +14,22 @@ export default function CameraPage() {
   const [stream, setStream] = useState<MediaStream | null>(null)
   const [photo, setPhoto] = useState<string | null>(null)
   const [saved, setSaved] = useState<Photo[]>([])
+  const [cameraActive, setCameraActive] = useState(false)
   const mediaOk =
     'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices
 
   useEffect(() => {
     loadPhotos()
+  }, [])
+
+  // Connecter le stream à la vidéo quand les deux sont prêts
+  useEffect(() => {
+    if (stream && videoRef.current) {
+      videoRef.current.srcObject = stream
+      videoRef.current.play().catch(() => {})
+    }
     return () => {
-      stream?.getTracks().forEach((t) => t.stop())
+      if (stream) stream.getTracks().forEach((t) => t.stop())
     }
   }, [stream])
 
@@ -31,20 +40,18 @@ export default function CameraPage() {
   }
 
   const startCamera = async () => {
+    setCameraActive(true)
     try {
       const s = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: 'environment',
+          facingMode: { ideal: 'environment' },
           width: { ideal: 1280 },
           height: { ideal: 720 },
         },
       })
-      if (videoRef.current) {
-        videoRef.current.srcObject = s
-        await videoRef.current.play()
-      }
       setStream(s)
     } catch (err) {
+      setCameraActive(false)
       alert(`Erreur caméra : ${err}`)
     }
   }
@@ -53,18 +60,21 @@ export default function CameraPage() {
     if (!videoRef.current || !canvasRef.current) return
     const v = videoRef.current
     const c = canvasRef.current
-    c.width = v.videoWidth
-    c.height = v.videoHeight
+    c.width = v.videoWidth || 640
+    c.height = v.videoHeight || 480
     c.getContext('2d')?.drawImage(v, 0, 0)
-    setPhoto(c.toDataURL('image/jpeg', 0.8))
+    const dataUrl = c.toDataURL('image/jpeg', 0.8)
+    setPhoto(dataUrl)
     stream?.getTracks().forEach((t) => t.stop())
     setStream(null)
+    setCameraActive(false)
   }
 
   const savePhoto = async () => {
     if (!photo) return
     const db = await getDB()
     await db.add('photos', { dataUrl: photo, createdAt: Date.now() })
+    setPhoto(null)
     loadPhotos()
   }
 
@@ -100,24 +110,23 @@ export default function CameraPage() {
       </div>
 
       <h3>Méthode 1 : Flux caméra (getUserMedia)</h3>
-      {!stream && !photo && (
+      {!cameraActive && !photo && (
         <button className="btn-primary" onClick={startCamera} disabled={!mediaOk}>
           📷 Ouvrir la caméra
         </button>
       )}
 
-      {stream && (
-        <div className="camera-preview">
-          <video ref={videoRef} autoPlay playsInline className="video-preview" />
-          <button
-            className="btn-primary"
-            onClick={takePhoto}
-            style={{ marginTop: '0.5rem' }}
-          >
-            📸 Prendre la photo
-          </button>
-        </div>
-      )}
+      {/* Vidéo toujours dans le DOM pour que le ref soit dispo */}
+      <div className="camera-preview" style={{ display: cameraActive ? 'block' : 'none' }}>
+        <video ref={videoRef} autoPlay playsInline muted className="video-preview" />
+        <button
+          className="btn-primary"
+          onClick={takePhoto}
+          style={{ marginTop: '0.5rem' }}
+        >
+          📸 Prendre la photo
+        </button>
+      </div>
 
       <canvas ref={canvasRef} style={{ display: 'none' }} />
 

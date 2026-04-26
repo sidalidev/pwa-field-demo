@@ -122,25 +122,47 @@ export default function InstallPage() {
       )}
 
       {platform === 'desktop' && (
-        <div className="install-card">
-          <h3>💻 Installer la PWA sur ton ordinateur</h3>
-          <p>
-            Chrome / Edge propose un bouton « Installer » dans la barre d'adresse.
-            L'app obtient sa propre fenêtre, sans barre du navigateur.
-          </p>
-          {deferredPrompt ? (
-            <button className="btn-primary" onClick={handleInstall}>
-              📲 Installer PWA Demo
-            </button>
-          ) : standalone ? (
-            <div className="info-box success">
-              🎉 L'app tourne déjà en mode standalone !
-            </div>
-          ) : (
-            <p className="hint">
-              💡 Cherche l'icône 🖥️ dans la barre d'adresse de Chrome / Edge.
+        <div className="install-options">
+          <div className="install-card">
+            <h3>💻 Installer la PWA sur ton ordinateur</h3>
+            <p>
+              Chrome / Edge propose un bouton « Installer » dans la barre
+              d'adresse. L'app obtient sa propre fenêtre, sans barre du
+              navigateur.
             </p>
-          )}
+            {deferredPrompt ? (
+              <button className="btn-primary" onClick={handleInstall}>
+                📲 Installer PWA Demo
+              </button>
+            ) : standalone ? (
+              <div className="info-box success">
+                🎉 L'app tourne déjà en mode standalone !
+              </div>
+            ) : (
+              <p className="hint">
+                💡 Cherche l'icône 🖥️ dans la barre d'adresse de Chrome / Edge.
+              </p>
+            )}
+          </div>
+
+          <div className="install-card">
+            <h3>📦 Bonus — l'APK Android Capacitor</h3>
+            <p>
+              Le même code React, emballé dans un APK natif (via Capacitor).
+              Récupère l'APK depuis ton ordi puis transfère-le sur Android.
+            </p>
+            <a
+              className="btn-primary"
+              href="/pwa-demo.apk"
+              download="pwa-demo.apk"
+            >
+              ⬇️ Télécharger l'APK (~8 Mo)
+            </a>
+            <p className="hint">
+              Démontre le message PWA Day 2 : un seul codebase, plusieurs
+              véhicules de distribution.
+            </p>
+          </div>
         </div>
       )}
 

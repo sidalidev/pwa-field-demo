@@ -159,8 +159,8 @@ export default function InstallPage() {
               ⬇️ Télécharger l'APK (~8 Mo)
             </a>
             <p className="hint">
-              Démontre le message PWA Day 2 : un seul codebase, plusieurs
-              véhicules de distribution.
+              Une seule codebase React, plusieurs véhicules de distribution.
+              C'est tout le message du Day 2.
             </p>
           </div>
         </div>

@@ -172,6 +172,46 @@ body {
   border-bottom: none;
 }
 
+/* ── Install options (cross-platform) ── */
+.install-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.install-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+}
+.install-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+.install-card p {
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.install-card .btn-primary {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  text-decoration: none;
+}
+.install-card ol {
+  margin: 0 0 0.75rem 1.25rem;
+  padding: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.install-card .hint {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin: 0.25rem 0 0 0;
+}
+
 /* ── Buttons ── */
 .btn-primary,
 .btn-secondary,

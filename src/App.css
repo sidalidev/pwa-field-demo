@@ -94,7 +94,7 @@ body {
   height: var(--tab-h);
   background: var(--surface);
   border-top: 1px solid var(--border);
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: max(env(safe-area-inset-bottom), 16px);
 }
 .tab-btn {
   flex: 1;

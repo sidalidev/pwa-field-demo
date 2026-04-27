@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">YGO Collection</string>
-    <string name="title_activity_main">YGO Collection</string>
-    <string name="package_name">com.formation.yugioh</string>
-    <string name="custom_url_scheme">com.formation.yugioh</string>
+    <string name="app_name">PWA Demo</string>
+    <string name="title_activity_main">PWA Demo</string>
+    <string name="package_name">com.formation.pwademo</string>
+    <string name="custom_url_scheme">com.formation.pwademo</string>
 </resources>

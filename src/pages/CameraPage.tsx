@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { getDB } from '../db'
 import TestResult from '../components/TestResult'
+import { isNativeApp } from '../usePlatform'
 
 interface Photo {
   id?: number
@@ -15,8 +16,24 @@ export default function CameraPage() {
   const [photo, setPhoto] = useState<string | null>(null)
   const [saved, setSaved] = useState<Photo[]>([])
   const [cameraActive, setCameraActive] = useState(false)
+  const native = isNativeApp()
   const mediaOk =
     'mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices
+
+  const takeNativePhoto = async () => {
+    try {
+      const { Camera, CameraResultType, CameraSource } = await import('@capacitor/camera')
+      const result = await Camera.getPhoto({
+        quality: 80,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Prompt,
+      })
+      if (result.dataUrl) setPhoto(result.dataUrl)
+    } catch (err) {
+      alert(`Erreur plugin Camera : ${(err as Error).message}`)
+    }
+  }
 
   useEffect(() => {
     loadPhotos()
@@ -138,6 +155,19 @@ export default function CameraPage() {
         onChange={handleFile}
         className="file-input"
       />
+
+      {native && (
+        <>
+          <h3>Méthode 3 : Plugin Capacitor (natif)</h3>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: '0 0 0.5rem 0' }}>
+            Ouvre l'app Camera système (Android/iOS). Permission native demandée
+            au premier appel. UI native, qualité optimale, accès EXIF.
+          </p>
+          <button className="btn-primary" onClick={takeNativePhoto}>
+            📸 Capacitor Camera
+          </button>
+        </>
+      )}
 
       {photo && (
         <div className="photo-result">

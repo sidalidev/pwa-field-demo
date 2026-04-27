@@ -1,14 +1,6 @@
 import { useState, useEffect } from 'react'
 import TestResult from '../components/TestResult'
-
-type Platform = 'android' | 'ios' | 'desktop'
-
-function detectPlatform(): Platform {
-  const ua = navigator.userAgent
-  if (/android/i.test(ua)) return 'android'
-  if (/iPad|iPhone|iPod/.test(ua)) return 'ios'
-  return 'desktop'
-}
+import { detectRuntime, getDeviceUA, type RuntimePlatform } from '../usePlatform'
 
 export default function InstallPage() {
   const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null)
@@ -16,7 +8,8 @@ export default function InstallPage() {
   const [standalone] = useState(
     window.matchMedia('(display-mode: standalone)').matches,
   )
-  const [platform] = useState<Platform>(detectPlatform())
+  const [runtime] = useState<RuntimePlatform>(detectRuntime())
+  const [device] = useState(getDeviceUA())
 
   useEffect(() => {
     const onPrompt = (e: Event) => {
@@ -45,42 +38,77 @@ export default function InstallPage() {
     setDeferredPrompt(null)
   }
 
+  const runtimeLabel = {
+    'android-apk': '📦 APK Capacitor (Android natif)',
+    'ios-ipa': '📦 IPA Capacitor (iOS natif)',
+    'web-installed': '🌐 PWA installée (mode standalone)',
+    'web-browser': `🌐 Navigateur ${device === 'android' ? 'Android' : device === 'ios' ? 'iOS' : 'Desktop'}`,
+  }[runtime]
+
   return (
     <div className="page">
       <h2>📲 Installer PWA Demo</h2>
       <p className="page-desc">
-        Le même code React, deux façons de l'installer selon la plateforme.
+        Le même code React, plusieurs véhicules de distribution selon la
+        plateforme.
       </p>
 
       <div className="test-section">
-        <h3>Résultats</h3>
-        <TestResult
-          status="supported"
-          label={`Plateforme détectée : ${platform === 'android' ? 'Android' : platform === 'ios' ? 'iOS' : 'Desktop'}`}
-        />
+        <h3>Mode d'exécution actuel</h3>
+        <TestResult status="supported" label={runtimeLabel} />
         <TestResult
           status={standalone ? 'supported' : 'pending'}
           label={
             standalone
-              ? 'Mode standalone actif — pas de barre Chrome'
-              : "Ouvrir depuis l'écran d'accueil pour le mode standalone"
-          }
-        />
-        <TestResult
-          status={
-            installed ? 'supported' : deferredPrompt ? 'supported' : 'pending'
-          }
-          label={
-            installed
-              ? 'PWA installée avec succès'
-              : deferredPrompt
-                ? "Installation PWA disponible"
-                : "En attente du prompt PWA..."
+              ? 'Mode standalone actif (pas de barre navigateur)'
+              : "Mode onglet — installer pour passer en standalone"
           }
         />
       </div>
 
-      {platform === 'android' && (
+      {/* Déjà dans l'APK / IPA Capacitor — rien à installer */}
+      {(runtime === 'android-apk' || runtime === 'ios-ipa') && (
+        <div className="install-card">
+          <h3>✅ Tu es dans l'app native</h3>
+          <p>
+            Cette app tourne dans une <strong>WebView Capacitor</strong>{' '}
+            emballée dans un{' '}
+            {runtime === 'android-apk' ? 'APK Android' : 'IPA iOS'}. Tu as déjà
+            le meilleur des deux mondes : le code React partagé avec la PWA, et
+            les permissions natives (caméra, GPS, contacts, etc.).
+          </p>
+          <p className="hint">
+            💡 La même codebase est aussi accessible en navigateur à{' '}
+            <code>https://pwa-field-demo.vercel.app</code>. Pas de réécriture,
+            juste deux véhicules de distribution.
+          </p>
+        </div>
+      )}
+
+      {/* PWA installée standalone — tout est OK */}
+      {runtime === 'web-installed' && (
+        <div className="install-card">
+          <h3>🎉 PWA installée et active</h3>
+          <p>
+            L'app tourne en mode standalone (pas de barre navigateur). Le
+            Service Worker garde tout en cache offline.
+          </p>
+          <p className="hint">
+            Pour aller plus loin (contacts, push fiable iOS, biométrie), il
+            faudrait passer en APK Capacitor — téléchargeable ci-dessous.
+          </p>
+          <a
+            className="btn-primary"
+            href="/pwa-demo.apk"
+            download="pwa-demo.apk"
+          >
+            ⬇️ Télécharger l'APK Capacitor (~16 Mo)
+          </a>
+        </div>
+      )}
+
+      {/* Navigateur Android — 2 options */}
+      {runtime === 'web-browser' && device === 'android' && (
         <div className="install-options">
           <div className="install-card">
             <h3>🌐 Option 1 — Installer la PWA</h3>
@@ -104,14 +132,15 @@ export default function InstallPage() {
             <h3>📦 Option 2 — Télécharger l'APK Capacitor</h3>
             <p>
               Le même code React, emballé dans un APK natif (via Capacitor). À
-              installer comme une vraie app Android.
+              installer comme une vraie app Android. Permissions natives
+              activées : caméra, GPS, contacts.
             </p>
             <a
               className="btn-primary"
               href="/pwa-demo.apk"
               download="pwa-demo.apk"
             >
-              ⬇️ Télécharger l'APK (~8 Mo)
+              ⬇️ Télécharger l'APK (~16 Mo)
             </a>
             <p className="hint">
               Activer « Sources inconnues » dans les paramètres Android avant
@@ -121,7 +150,8 @@ export default function InstallPage() {
         </div>
       )}
 
-      {platform === 'desktop' && (
+      {/* Navigateur Desktop — 2 options */}
+      {runtime === 'web-browser' && device === 'desktop' && (
         <div className="install-options">
           <div className="install-card">
             <h3>💻 Installer la PWA sur ton ordinateur</h3>
@@ -134,10 +164,6 @@ export default function InstallPage() {
               <button className="btn-primary" onClick={handleInstall}>
                 📲 Installer PWA Demo
               </button>
-            ) : standalone ? (
-              <div className="info-box success">
-                🎉 L'app tourne déjà en mode standalone !
-              </div>
             ) : (
               <p className="hint">
                 💡 Cherche l'icône 🖥️ dans la barre d'adresse de Chrome / Edge.
@@ -149,14 +175,15 @@ export default function InstallPage() {
             <h3>📦 Bonus — l'APK Android Capacitor</h3>
             <p>
               Le même code React, emballé dans un APK natif (via Capacitor).
-              Récupère l'APK depuis ton ordi puis transfère-le sur Android.
+              Récupère l'APK depuis ton ordi puis transfère-le sur Android pour
+              comparer.
             </p>
             <a
               className="btn-primary"
               href="/pwa-demo.apk"
               download="pwa-demo.apk"
             >
-              ⬇️ Télécharger l'APK (~8 Mo)
+              ⬇️ Télécharger l'APK (~16 Mo)
             </a>
             <p className="hint">
               Une seule codebase React, plusieurs véhicules de distribution.
@@ -166,14 +193,21 @@ export default function InstallPage() {
         </div>
       )}
 
-      {platform === 'ios' && (
+      {/* Navigateur iOS — Safari Add to Home Screen */}
+      {runtime === 'web-browser' && device === 'ios' && (
         <div className="install-card">
           <h3>📱 Installer la PWA sur iPhone (Safari)</h3>
           <p>iOS ne propose pas de prompt automatique. Suis ces 3 étapes :</p>
           <ol>
-            <li>Ouvrir cette page dans <strong>Safari</strong> (pas Chrome iOS)</li>
-            <li>Bouton <strong>Partager</strong> 📤 en bas de l'écran</li>
-            <li>« <strong>Sur l'écran d'accueil</strong> » puis Ajouter</li>
+            <li>
+              Ouvrir cette page dans <strong>Safari</strong> (pas Chrome iOS)
+            </li>
+            <li>
+              Bouton <strong>Partager</strong> 📤 en bas de l'écran
+            </li>
+            <li>
+              « <strong>Sur l'écran d'accueil</strong> » puis Ajouter
+            </li>
           </ol>
           <p className="hint">
             ⚠️ iOS limite les PWA (push partiel, stockage Safari purgé après 7j

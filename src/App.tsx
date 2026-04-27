@@ -9,6 +9,7 @@ import CameraPage from './pages/CameraPage'
 import GeoPage from './pages/GeoPage'
 import SignaturePage from './pages/SignaturePage'
 import StoragePage from './pages/StoragePage'
+import ContactsPage from './pages/ContactsPage'
 
 export type Tab =
   | 'install'
@@ -16,6 +17,7 @@ export type Tab =
   | 'sync'
   | 'camera'
   | 'geo'
+  | 'contacts'
   | 'signature'
   | 'storage'
 
@@ -25,6 +27,7 @@ const pages: Record<Tab, ComponentType> = {
   sync: SyncPage,
   camera: CameraPage,
   geo: GeoPage,
+  contacts: ContactsPage,
   signature: SignaturePage,
   storage: StoragePage,
 }

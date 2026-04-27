@@ -2,11 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import TestResult from '../components/TestResult'
+import { isNativeApp } from '../usePlatform'
 
 export default function GeoPage() {
   const [position, setPosition] = useState<GeolocationPosition | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [watching, setWatching] = useState(false)
+  const native = isNativeApp()
   const geoOk = 'geolocation' in navigator
 
   const watchRef = useRef<number | null>(null)
@@ -47,8 +49,38 @@ export default function GeoPage() {
     mapRef.current = map
   }
 
-  const getPosition = () => {
+  const getPosition = async () => {
     setError(null)
+    if (native) {
+      try {
+        const { Geolocation } = await import('@capacitor/geolocation')
+        const perm = await Geolocation.requestPermissions()
+        if (perm.location !== 'granted' && perm.coarseLocation !== 'granted') {
+          setError('Permission GPS refusée. Active la localisation dans les paramètres.')
+          return
+        }
+        const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true })
+        const fakeNavPos = {
+          coords: {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude,
+            accuracy: pos.coords.accuracy,
+            altitude: pos.coords.altitude,
+            altitudeAccuracy: pos.coords.altitudeAccuracy,
+            heading: pos.coords.heading,
+            speed: pos.coords.speed,
+            toJSON: () => ({}),
+          },
+          timestamp: pos.timestamp,
+          toJSON: () => ({}),
+        } as unknown as GeolocationPosition
+        setPosition(fakeNavPos)
+        updateMap(pos.coords.latitude, pos.coords.longitude)
+      } catch (e) {
+        setError((e as Error).message)
+      }
+      return
+    }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setPosition(pos)

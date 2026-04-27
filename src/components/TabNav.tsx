@@ -5,7 +5,8 @@ const tabs: { id: Tab; icon: string; label: string }[] = [
   { id: 'offline', icon: '📡', label: 'Items' },
   { id: 'sync', icon: '🔄', label: 'Sync' },
   { id: 'camera', icon: '📷', label: 'Photo' },
-  { id: 'geo', icon: '📍', label: 'Boutiques' },
+  { id: 'geo', icon: '📍', label: 'Geo' },
+  { id: 'contacts', icon: '📇', label: 'Contacts' },
   { id: 'signature', icon: '✍️', label: 'Dessin' },
   { id: 'storage', icon: '💾', label: 'Stock.' },
 ]
